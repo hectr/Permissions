@@ -17,10 +17,11 @@ public struct AltimeterAuthorizationSource: AuthorizationSource, AuthorizationSt
         self.subject = subject
     }
 
-    public func requestAuthorization(completion: @escaping (AuthorizationStatus<Void>) -> Void) {
-        provider.startRelativeAltitudeUpdates(to: operationQueue) { _, _ in
+    public func requestAuthorization(timeout: TimeInterval?, handler: @escaping (Result<Void, Swift.Error>) -> Void) {
+        let completion = ExpirableCompletion(timeout: timeout, operationQueue: operationQueue, completion: handler)
+        provider.startRelativeAltitudeUpdates(to: operationQueue) { _, error in
             self.provider.stopRelativeAltitudeUpdates()
-            self.getStatus(completion: completion)
+            completion.execute(with: error)
         }
     }
 }

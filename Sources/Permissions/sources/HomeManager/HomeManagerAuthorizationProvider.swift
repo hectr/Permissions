@@ -3,7 +3,7 @@ import HomeKit
 
 @available(iOS 13.0, *)
 class HomeManagerAuthorizationProvider: NSObject, HMHomeManagerDelegate {
-    typealias Handler = (AuthorizationStatus<Void>) -> Void
+    typealias Handler = (Swift.Error?) -> Void
 
     private typealias IsFirstHandler = Bool
 
@@ -74,7 +74,7 @@ class HomeManagerAuthorizationProvider: NSObject, HMHomeManagerDelegate {
     private func notifyHandlers() {
         let handlers = resetHandlers()
         for handler in handlers {
-            handler(status)
+            handler(nil)
         }
     }
 

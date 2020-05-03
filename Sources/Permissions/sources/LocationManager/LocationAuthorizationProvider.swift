@@ -2,7 +2,7 @@ import CoreLocation
 import Foundation
 
 class LocationAuthorizationProvider: NSObject, CLLocationManagerDelegate {
-    typealias Handler = (AuthorizationStatus<LocationManagerAuthorizationSource.When>) -> Void
+    typealias Handler = (Swift.Error?) -> Void
 
     private typealias ShouldRequestAuthorization = Bool
 
@@ -56,7 +56,7 @@ class LocationAuthorizationProvider: NSObject, CLLocationManagerDelegate {
     private func notifyHandlers() {
         let handlers = resetHandlers()
         for handler in handlers {
-            handler(status)
+            handler(nil)
         }
     }
 

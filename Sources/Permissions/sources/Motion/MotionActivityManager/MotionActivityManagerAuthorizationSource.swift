@@ -17,9 +17,10 @@ public struct MotionActivityManagerAuthorizationSource: AuthorizationSource, Aut
         self.subject = subject
     }
 
-    public func requestAuthorization(completion: @escaping (AuthorizationStatus<Void>) -> Void) {
-        provider.queryActivityStarting(from: Date(), to: Date(), to: operationQueue) { _, _ in
-            self.getStatus(completion: completion)
+    public func requestAuthorization(timeout: TimeInterval?, handler: @escaping (Result<Void, Swift.Error>) -> Void) {
+        let completion = ExpirableCompletion(timeout: timeout, operationQueue: operationQueue, completion: handler)
+        provider.queryActivityStarting(from: Date(), to: Date(), to: operationQueue) { _, error in
+            completion.execute(with: error)
         }
     }
 }

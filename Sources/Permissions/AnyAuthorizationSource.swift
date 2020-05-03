@@ -3,7 +3,7 @@ import Foundation
 public struct AnyAuthorizationSource<Subject>: AuthorizationSource {
     private let subjectGetter: () -> Subject
     private let determine: (@escaping (AuthorizationStatus<Subject>) -> Void) -> Void
-    private let request: (@escaping (AuthorizationStatus<Subject>) -> Void) -> Void
+    private let request: (TimeInterval?, @escaping (Result<Void, Swift.Error>) -> Void) -> Void
     private let status: (@escaping (AuthorizationStatus<Subject>) -> Void) -> Void
 
     public var subject: Subject { subjectGetter() }
@@ -23,8 +23,8 @@ public struct AnyAuthorizationSource<Subject>: AuthorizationSource {
         status(completion)
     }
 
-    public func requestAuthorization(completion: @escaping (AuthorizationStatus<Subject>) -> Void) {
-        request(completion)
+    public func requestAuthorization(timeout: TimeInterval?, handler: @escaping (Result<Void, Swift.Error>) -> Void) {
+        request(timeout, handler)
     }
 }
 

@@ -13,7 +13,7 @@ final class AnyAuthorizationSourceTests: XCTestCase {
         var subject: Int = 1234
 
         fileprivate var getStatusStatus: AuthorizationStatus<Int>!
-        fileprivate var requestAuthorizationStatus: AuthorizationStatus<Int>!
+        fileprivate var requestAuthorizationStatus: AuthorizationStatus<Int>?
 
         fileprivate var getStatusCalled = false
         fileprivate var requestAuthorizationCalled = false
@@ -23,9 +23,14 @@ final class AnyAuthorizationSourceTests: XCTestCase {
             completion(self.getStatusStatus)
         }
 
-        func requestAuthorization(completion: @escaping (AuthorizationStatus<Int>) -> Void) {
+        func requestAuthorization(timeout: TimeInterval?, handler: @escaping (Result<Void, Swift.Error>) -> Void) {
             self.requestAuthorizationCalled = true
-            completion(self.requestAuthorizationStatus)
+            if requestAuthorizationStatus != nil {
+                getStatusStatus = requestAuthorizationStatus
+                handler(Result.success(Void()))
+            } else {
+                handler(Result.failure(NSError(domain: #function, code: #line, userInfo: nil)))
+            }
         }
     }
 

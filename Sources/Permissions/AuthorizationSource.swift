@@ -6,7 +6,7 @@ public protocol AuthorizationSource {
     var subject: Subject { get }
     func determineAuthorizationStatus(completion: @escaping (AuthorizationStatus<Subject>) -> Void)
     func getStatus(completion: @escaping (AuthorizationStatus<Subject>) -> Void)
-    func requestAuthorization(completion: @escaping (AuthorizationStatus<Subject>) -> Void)
+    func requestAuthorization(timeout: TimeInterval?, handler: @escaping (Result<Void, Swift.Error>) -> Void)
 }
 
 extension AuthorizationSource {
@@ -22,7 +22,9 @@ extension AuthorizationSource {
 
             case let .unauthorized(reason):
                 if reason.canRequestPermission {
-                    self.requestAuthorization(completion: completion)
+                    self.requestAuthorization(timeout: nil) { _ in 
+                        self.getStatus(completion: completion)
+                    }
                 } else {
                     completion(status)
                 }
@@ -30,3 +32,4 @@ extension AuthorizationSource {
         }
     }
 }
+

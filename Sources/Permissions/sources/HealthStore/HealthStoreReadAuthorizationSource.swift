@@ -16,9 +16,10 @@ public struct HealthStoreReadAuthorizationSource: AuthorizationSource, Authoriza
         self.subject = subject
     }
 
-    public func requestAuthorization(completion: @escaping (AuthorizationStatus<HKObjectType>) -> Void) {
-        provider.requestAuthorization(toShare: nil, read: Set(arrayLiteral: subject)) { _, _ in
-            self.getStatus(completion: completion)
+    public func requestAuthorization(timeout: TimeInterval?, handler: @escaping (Result<Void, Swift.Error>) -> Void) {
+        let completion = ExpirableCompletion(timeout: timeout, operationQueue: operationQueue, completion: handler)
+        provider.requestAuthorization(toShare: nil, read: Set(arrayLiteral: subject)) { _, error in
+            completion.execute(with: error)
         }
     }
 }

@@ -17,9 +17,10 @@ public struct PedometerAuthorizationSource: AuthorizationSource, AuthorizationSt
         self.subject = subject
     }
 
-    public func requestAuthorization(completion: @escaping (AuthorizationStatus<Void>) -> Void) {
-        provider.queryPedometerData(from: Date(), to: Date()) { _, _ in
-            self.getStatus(completion: completion)
+    public func requestAuthorization(timeout: TimeInterval?, handler: @escaping (Result<Void, Swift.Error>) -> Void) {
+        let completion = ExpirableCompletion(timeout: timeout, operationQueue: operationQueue, completion: handler)
+        provider.queryPedometerData(from: Date(), to: Date()) { _, error in
+            completion.execute(with: error)
         }
     }
 }

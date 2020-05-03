@@ -17,9 +17,10 @@ public struct ContactStoreAuthorizationSource: AuthorizationSource, Authorizatio
         self.subject = subject
     }
 
-    public func requestAuthorization(completion: @escaping (AuthorizationStatus<CNEntityType>) -> Void) {
-        provider.requestAccess(for: subject) { _, _ in
-            self.getStatus(completion: completion)
+    public func requestAuthorization(timeout: TimeInterval?, handler: @escaping (Result<Void, Swift.Error>) -> Void) {
+        let completion = ExpirableCompletion(timeout: timeout, operationQueue: operationQueue, completion: handler)
+        provider.requestAccess(for: subject) { _, error in
+            completion.execute(with: error)
         }
     }
 }

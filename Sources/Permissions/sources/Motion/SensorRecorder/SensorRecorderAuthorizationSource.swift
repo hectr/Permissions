@@ -17,8 +17,9 @@ public struct SensorRecorderAuthorizationSource: AuthorizationSource, Authorizat
         self.subject = subject
     }
 
-    public func requestAuthorization(completion: @escaping (AuthorizationStatus<Void>) -> Void) {
+    public func requestAuthorization(timeout: TimeInterval?, handler: @escaping (Result<Void, Swift.Error>) -> Void) {
+        let completion = ExpirableCompletion(timeout: timeout, operationQueue: operationQueue, completion: handler)
         _ = provider.accelerometerData(from: Date(), to: Date())
-        getStatus(completion: completion)
+        completion.execute(with: nil)
     }
 }

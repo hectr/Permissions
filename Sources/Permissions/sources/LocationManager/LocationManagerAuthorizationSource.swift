@@ -20,7 +20,10 @@ public struct LocationManagerAuthorizationSource: AuthorizationSource, Authoriza
         provider = LocationAuthorizationProvider(subject: subject)
     }
 
-    public func requestAuthorization(completion: @escaping (AuthorizationStatus<When>) -> Void) {
-        provider.requestAuthorization(completion: completion)
+    public func requestAuthorization(timeout: TimeInterval?, handler: @escaping (Result<Void, Swift.Error>) -> Void) {
+        let completion = ExpirableCompletion(timeout: timeout, operationQueue: operationQueue, completion: handler)
+        provider.requestAuthorization { error in
+            completion.execute(with: error)
+        }
     }
 }

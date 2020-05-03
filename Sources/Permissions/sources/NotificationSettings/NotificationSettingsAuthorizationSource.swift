@@ -27,7 +27,9 @@ public struct NotificationSettingsAuthorizationSource: AuthorizationSource {
 
             case let .unauthorized(reason):
                 if reason.canRequestPermission {
-                    self.requestAuthorization(completion: completion)
+                    self.requestAuthorization(timeout: nil) { error in
+                        self.getStatus(completion: completion)
+                    }
                 } else {
                     completion(status)
                 }
@@ -35,9 +37,10 @@ public struct NotificationSettingsAuthorizationSource: AuthorizationSource {
         }
     }
 
-    public func requestAuthorization(completion: @escaping (AuthorizationStatus<UNAuthorizationOptions>) -> Void) {
-        provider.requestAuthorization(options: subject) { _, _ in
-            self.getStatus(completion: completion)
+    public func requestAuthorization(timeout: TimeInterval?, handler: @escaping (Result<Void, Swift.Error>) -> Void) {
+        let completion = ExpirableCompletion(timeout: timeout, operationQueue: operationQueue, completion: handler)
+        provider.requestAuthorization(options: subject) { _, error in
+            completion.execute(with: error)
         }
     }
 

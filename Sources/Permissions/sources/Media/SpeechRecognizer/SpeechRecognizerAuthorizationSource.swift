@@ -17,9 +17,10 @@ public struct SpeechRecognizerAuthorizationSource: AuthorizationSource, Authoriz
         self.subject = subject
     }
 
-    public func requestAuthorization(completion: @escaping (AuthorizationStatus<Void>) -> Void) {
+    public func requestAuthorization(timeout: TimeInterval?, handler: @escaping (Result<Void, Swift.Error>) -> Void) {
+        let completion = ExpirableCompletion(timeout: timeout, operationQueue: operationQueue, completion: handler)
         provider.requestAuthorization { _ in
-            self.getStatus(completion: completion)
+            completion.execute(with: nil)
         }
     }
 }
