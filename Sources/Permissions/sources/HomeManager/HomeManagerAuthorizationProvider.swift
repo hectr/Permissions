@@ -32,7 +32,7 @@ class HomeManagerAuthorizationProvider: NSObject, HMHomeManagerDelegate {
 
     deinit {
         assert(handlers.isEmpty, "\(self) is being deinitialized while there are still \(handlers.count) handlers waiting to be notified")
-        notifyHandlers()
+        notifyHandlers(error: Error.providerDeallocated)
     }
 
     func requestAuthorization(completion: @escaping Handler) {
@@ -41,7 +41,7 @@ class HomeManagerAuthorizationProvider: NSObject, HMHomeManagerDelegate {
         if shouldRequestAuthorization {
             _ = manager
         } else {
-            notifyHandlers()
+            notifyHandlers(error: nil)
         }
     }
 
@@ -49,7 +49,7 @@ class HomeManagerAuthorizationProvider: NSObject, HMHomeManagerDelegate {
 
     func homeManagerDidUpdateHomes(_: HMHomeManager) {
         delegateCalled = true
-        notifyHandlers()
+        notifyHandlers(error: nil)
     }
 
     func homeManager(_: HMHomeManager, didUpdate _: HMHomeManagerAuthorizationStatus) {
@@ -57,7 +57,7 @@ class HomeManagerAuthorizationProvider: NSObject, HMHomeManagerDelegate {
         DispatchQueue
             .main
             .async { [weak self] in
-                self?.notifyHandlers()
+                self?.notifyHandlers(error: nil)
             }
     }
 
@@ -71,10 +71,10 @@ class HomeManagerAuthorizationProvider: NSObject, HMHomeManagerDelegate {
         return isFirstHandler
     }
 
-    private func notifyHandlers() {
+    private func notifyHandlers(error: Swift.Error?) {
         let handlers = resetHandlers()
         for handler in handlers {
-            handler(nil)
+            handler(error)
         }
     }
 

@@ -27,7 +27,7 @@ class LocationAuthorizationProvider: NSObject, CLLocationManagerDelegate {
 
     deinit {
         assert(handlers.isEmpty, "\(self) is being deinitialized while there are still \(handlers.count) handlers waiting to be notified")
-        notifyHandlers()
+        notifyHandlers(error: Error.providerDeallocated)
     }
 
     func requestAuthorization(completion: @escaping Handler) {
@@ -40,7 +40,13 @@ class LocationAuthorizationProvider: NSObject, CLLocationManagerDelegate {
     // MARK: - CLLocationManagerDelegate
 
     func locationManager(_ manager: CLLocationManager, didChangeAuthorization status: CLAuthorizationStatus) {
-        notifyHandlers()
+        manager.stopUpdatingLocation()
+        notifyHandlers(error: nil)
+    }
+
+    func locationManager(_ manager: CLLocationManager, didFailWithError error: Swift.Error) {
+        manager.stopUpdatingLocation()
+        notifyHandlers(error: error)
     }
 
     // MARK: - Private
@@ -53,10 +59,10 @@ class LocationAuthorizationProvider: NSObject, CLLocationManagerDelegate {
         return isFirstHandler
     }
 
-    private func notifyHandlers() {
+    private func notifyHandlers(error: Swift.Error?) {
         let handlers = resetHandlers()
         for handler in handlers {
-            handler(nil)
+            handler(error)
         }
     }
 

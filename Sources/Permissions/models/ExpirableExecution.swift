@@ -1,10 +1,6 @@
 import Foundation
 
 public final class ExpirableCompletion<Success> {
-    public enum Error: Swift.Error {
-        case expired
-    }
-
     private let lock = NSLock()
     private let operationQueue: OperationQueue
 
@@ -22,7 +18,7 @@ public final class ExpirableCompletion<Success> {
         DispatchQueue
             .global()
             .asyncAfter(deadline: .now() + delay) { [weak self] in
-                self?.execute(with: Result.failure(Error.expired))
+                self?.execute(with: Result.failure(Error.operationTimedOut))
             }
     }
 
