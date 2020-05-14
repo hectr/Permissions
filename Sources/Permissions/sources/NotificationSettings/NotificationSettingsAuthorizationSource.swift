@@ -5,6 +5,7 @@ import UserNotifications
 @available(iOS 10.0, *)
 public struct NotificationSettingsAuthorizationSource: AuthorizationSource {
     private typealias GetAuthorizedOptionsCompletion = (
+        _ status: UNAuthorizationStatus,
         _ disabled: [UNAuthorizationOptions],
         _ enabled: [UNAuthorizationOptions],
         _ notSupported: [UNAuthorizationOptions]
@@ -45,23 +46,13 @@ public struct NotificationSettingsAuthorizationSource: AuthorizationSource {
     }
 
     public func getStatus(completion: @escaping (AuthorizationStatus<UNAuthorizationOptions>) -> Void) {
-        getAuthorizedOptions { disabled, enabled, notSupported in
+        getAuthorizedOptions { status, disabled, enabled, notSupported in
             self.operationQueue.addOperation {
-                if !enabled.isEmpty {
-                    let optionSet = enabled.toOptionSet()
-                    completion(.authorized(optionSet))
-                } else {
-                    var reasons = [AuthorizationStatus<UNAuthorizationOptions>.Reason]()
-                    if !disabled.isEmpty {
-                        let optionSet = disabled.toOptionSet()
-                        reasons.append(.denied(optionSet))
-                    }
-                    if !notSupported.isEmpty {
-                        let optionSet = notSupported.toOptionSet()
-                        reasons.append(.restricted(optionSet))
-                    }
-                    completion(.unauthorized(.multiple(reasons)))
-                }
+                let authorizationStatus = status.toAuthorizationStatus(subject: self.subject,
+                                                                       disabled: disabled,
+                                                                       enabled: enabled,
+                                                                       notSupported: notSupported)
+                completion(authorizationStatus)
             }
         }
     }
@@ -78,7 +69,7 @@ public struct NotificationSettingsAuthorizationSource: AuthorizationSource {
             let notSupported = subjectSettings
                 .filter { $0.1.isNotSupported }
                 .map { $0.0 }
-            completion(disabled, enabled, notSupported)
+            completion(settings.authorizationStatus, disabled, enabled, notSupported)
         }
     }
 }
