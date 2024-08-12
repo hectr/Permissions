@@ -1,5 +1,4 @@
-// swift-tools-version:5.2
-// The swift-tools-version declares the minimum version of Swift required to build this package.
+// swift-tools-version:5.10
 
 import PackageDescription
 
@@ -14,13 +13,11 @@ let package = Package(
             targets: ["Permissions"]
         ),
     ],
-    dependencies: [
-        .package(name: "Idioms", url: "https://github.com/hectr/swift-idioms.git", from: "2.1.0"),
-    ],
+    dependencies: [],
     targets: [
         .target(
             name: "Permissions",
-            dependencies: ["Idioms"]
+            dependencies: []
         ),
         .testTarget(
             name: "PermissionsTests",

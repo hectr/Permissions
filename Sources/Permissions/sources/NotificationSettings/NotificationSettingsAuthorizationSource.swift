@@ -1,5 +1,4 @@
 import Foundation
-import Idioms
 import UserNotifications
 
 @available(iOS 10.0, *)
