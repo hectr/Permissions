@@ -1,7 +1,7 @@
+#if canImport(HomeKit)
 import Foundation
 import HomeKit
 
-@available(iOS 13.0, *)
 class HomeManagerAuthorizationProvider: NSObject, HMHomeManagerDelegate {
     typealias Handler = (Swift.Error?) -> Void
 
@@ -86,3 +86,4 @@ class HomeManagerAuthorizationProvider: NSObject, HMHomeManagerDelegate {
         return handlers
     }
 }
+#endif

@@ -1,7 +1,7 @@
+#if canImport(HomeKit)
 import Foundation
 import HomeKit
 
-@available(iOS 13.0, *)
 extension HMHomeManagerAuthorizationStatus {
     public func toAuthorizationStatus(subject: Void = Void()) -> AuthorizationStatus<Void> {
         if contains(.restricted) {
@@ -16,3 +16,4 @@ extension HMHomeManagerAuthorizationStatus {
         }
     }
 }
+#endif

@@ -1,7 +1,7 @@
+#if os(iOS) || targetEnvironment(macCatalyst)
 import Foundation
 import MediaPlayer
 
-@available(iOS 9.3, *)
 extension MPMediaLibraryAuthorizationStatus {
     public func toAuthorizationStatus(subject: Void = Void()) -> AuthorizationStatus<Void> {
         switch self {
@@ -23,3 +23,4 @@ extension MPMediaLibraryAuthorizationStatus {
         }
     }
 }
+#endif

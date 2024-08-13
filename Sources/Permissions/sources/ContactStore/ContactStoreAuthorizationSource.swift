@@ -1,7 +1,7 @@
+#if canImport(Contacts)
 import Contacts
 import Foundation
 
-@available(iOS 9.0, *)
 public struct ContactStoreAuthorizationSource: AuthorizationSource, AuthorizationStatusSource {
     public let subject: CNEntityType
 
@@ -24,3 +24,4 @@ public struct ContactStoreAuthorizationSource: AuthorizationSource, Authorizatio
         }
     }
 }
+#endif

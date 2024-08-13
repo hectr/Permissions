@@ -1,7 +1,7 @@
+#if canImport(Speech)
 import Foundation
 import Speech
 
-@available(iOS 10.0, *)
 public struct SpeechRecognizerAuthorizationSource: AuthorizationSource, AuthorizationStatusSource {
     public let subject: Void
 
@@ -24,3 +24,4 @@ public struct SpeechRecognizerAuthorizationSource: AuthorizationSource, Authoriz
         }
     }
 }
+#endif

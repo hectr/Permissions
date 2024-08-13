@@ -1,7 +1,7 @@
+#if os(iOS) || targetEnvironment(macCatalyst)
 import Foundation
 import MediaPlayer
 
-@available(iOS 9.3, *)
 public struct MediaLibraryAuthorizationSource: AuthorizationSource, AuthorizationStatusSource {
     public let subject: Void
 
@@ -24,3 +24,4 @@ public struct MediaLibraryAuthorizationSource: AuthorizationSource, Authorizatio
         }
     }
 }
+#endif

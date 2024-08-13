@@ -1,6 +1,6 @@
+#if canImport(HomeKit)
 import Foundation
 
-@available(iOS 13.0, *)
 public struct HomeManagerAuthorizationSource: AuthorizationSource, AuthorizationStatusSource {
     public var subject: Void {
         provider.subject
@@ -23,3 +23,4 @@ public struct HomeManagerAuthorizationSource: AuthorizationSource, Authorization
         }
     }
 }
+#endif

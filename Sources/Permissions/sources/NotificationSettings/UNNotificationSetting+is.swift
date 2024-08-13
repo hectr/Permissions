@@ -1,7 +1,6 @@
 import Foundation
 import UserNotifications
 
-@available(iOS 10.0, *)
 extension UNNotificationSetting {
     public var isDisabled: Bool {
         switch self {

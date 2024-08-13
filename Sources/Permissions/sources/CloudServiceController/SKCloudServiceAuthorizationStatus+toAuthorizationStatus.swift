@@ -1,7 +1,6 @@
 import Foundation
 import StoreKit
 
-@available(iOS 9.3, *)
 extension SKCloudServiceAuthorizationStatus {
     public func toAuthorizationStatus(subject: Void = Void()) -> AuthorizationStatus<Void> {
         switch self {

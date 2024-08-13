@@ -1,7 +1,6 @@
 import Foundation
 import UserNotifications
 
-@available(iOS 10.0, *)
 public struct NotificationSettingsAuthorizationSource: AuthorizationSource {
     private typealias GetAuthorizedOptionsCompletion = (
         _ status: UNAuthorizationStatus,
@@ -19,7 +18,7 @@ public struct NotificationSettingsAuthorizationSource: AuthorizationSource {
         self.subject = subject
     }
 
-    public func determineAuthorizationStatus(completion: @escaping (AuthorizationStatus<Subject>) -> Void) {
+    public func determineAuthorizationStatus(completion: @escaping (AuthorizationStatus<UNAuthorizationOptions>) -> Void) {
         getStatus { status in
             switch status {
             case .authorized:

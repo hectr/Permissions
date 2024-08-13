@@ -1,3 +1,4 @@
+#if canImport(HealthKit)
 import Foundation
 import HealthKit
 
@@ -23,3 +24,4 @@ public struct HealthStoreReadAuthorizationSource: AuthorizationSource, Authoriza
         }
     }
 }
+#endif

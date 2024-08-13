@@ -1,3 +1,4 @@
+#if !os(watchOS)
 import AVFoundation
 import Foundation
 
@@ -23,3 +24,4 @@ public struct CaptureDeviceAuthorizationSource: AuthorizationSource, Authorizati
         }
     }
 }
+#endif

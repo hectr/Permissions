@@ -1,7 +1,7 @@
+#if canImport(CoreMotion)
 import Foundation
 import CoreMotion
 
-@available(iOS 11.0, *)
 extension CMAuthorizationStatus {
     public func toAuthorizationStatus(subject: Void = Void()) -> AuthorizationStatus<Void> {
         switch self {
@@ -23,3 +23,4 @@ extension CMAuthorizationStatus {
         }
     }
 }
+#endif

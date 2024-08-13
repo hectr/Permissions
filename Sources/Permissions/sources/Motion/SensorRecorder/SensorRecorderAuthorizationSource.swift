@@ -1,7 +1,7 @@
+#if canImport(CoreMotion) && !os(macOS)
 import Foundation
 import CoreMotion
 
-@available(iOS 11.0, *)
 public struct SensorRecorderAuthorizationSource: AuthorizationSource, AuthorizationStatusSource {
     public let subject: Void
 
@@ -23,3 +23,4 @@ public struct SensorRecorderAuthorizationSource: AuthorizationSource, Authorizat
         completion.execute(with: nil)
     }
 }
+#endif

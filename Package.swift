@@ -5,7 +5,11 @@ import PackageDescription
 let package = Package(
     name: "Permissions",
     platforms: [
-        .iOS(.v8),
+        .iOS(.v15),
+        .macCatalyst(.v14),
+        .macOS(.v14),
+        .tvOS(.v17),
+        .watchOS(.v8),
     ],
     products: [
         .library(

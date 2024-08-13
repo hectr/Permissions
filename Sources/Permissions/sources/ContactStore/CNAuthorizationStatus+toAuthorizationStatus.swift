@@ -1,7 +1,7 @@
+#if canImport(Contacts)
 import Contacts
 import Foundation
 
-@available(iOS 9.0, *)
 extension CNAuthorizationStatus {
     public func toAuthorizationStatus(subject: CNEntityType) -> AuthorizationStatus<CNEntityType> {
         switch self {
@@ -23,3 +23,4 @@ extension CNAuthorizationStatus {
         }
     }
 }
+#endif

@@ -1,3 +1,4 @@
+#if !os(watchOS)
 import AVFoundation
 import Foundation
 
@@ -22,3 +23,4 @@ extension AVAuthorizationStatus {
         }
     }
 }
+#endif

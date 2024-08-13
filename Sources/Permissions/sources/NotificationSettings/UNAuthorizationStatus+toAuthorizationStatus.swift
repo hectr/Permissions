@@ -1,7 +1,6 @@
 import Foundation
-import StoreKit
+import UserNotifications
 
-@available(iOS 10.0, *)
 extension UNAuthorizationStatus {
     public func toAuthorizationStatus(subject: UNAuthorizationOptions,
                                       disabled: [UNAuthorizationOptions],
@@ -34,6 +33,9 @@ extension UNAuthorizationStatus {
             return .unauthorized(.notDetermined(affectedSubjects.toOptionSet()))
 
         case .provisional:
+            return .authorized(enabled.toOptionSet())
+
+        case .ephemeral:
             return .authorized(enabled.toOptionSet())
 
         @unknown default:

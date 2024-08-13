@@ -1,7 +1,6 @@
 import Foundation
 import StoreKit
 
-@available(iOS 9.3, *)
 public struct CloudServiceControllerAuthorizationSource: AuthorizationSource, AuthorizationStatusSource {
     public let subject: Void
 

@@ -1,3 +1,4 @@
+#if canImport(HealthKit)
 import Foundation
 import HealthKit
 
@@ -36,3 +37,4 @@ extension HKAuthorizationStatus {
         }
     }
 }
+#endif

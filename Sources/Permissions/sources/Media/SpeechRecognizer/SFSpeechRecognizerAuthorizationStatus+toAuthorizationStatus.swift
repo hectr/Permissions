@@ -1,7 +1,7 @@
+#if canImport(Speech)
 import Foundation
 import Speech
 
-@available(iOS 10.0, *)
 extension SFSpeechRecognizerAuthorizationStatus {
     public func toAuthorizationStatus(subject: Void = Void()) -> AuthorizationStatus<Void> {
         switch self {
@@ -23,3 +23,4 @@ extension SFSpeechRecognizerAuthorizationStatus {
         }
     }
 }
+#endif

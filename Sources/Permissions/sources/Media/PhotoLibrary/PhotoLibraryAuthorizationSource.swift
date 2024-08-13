@@ -1,3 +1,4 @@
+#if canImport(UIKit) && canImport(Photos) && !os(tvOS)
 import Foundation
 import Photos
 import UIKit
@@ -24,3 +25,4 @@ public struct PhotoLibraryAuthorizationSource: AuthorizationSource, Authorizatio
         }
     }
 }
+#endif

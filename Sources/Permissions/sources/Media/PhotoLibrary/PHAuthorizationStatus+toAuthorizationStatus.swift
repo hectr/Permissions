@@ -1,3 +1,4 @@
+#if canImport(UIKit) && canImport(Photos) && !os(tvOS)
 import Foundation
 import Photos
 import UIKit
@@ -17,9 +18,13 @@ extension PHAuthorizationStatus {
         case .restricted:
             return .unauthorized(.restricted(subject))
 
+        case .limited:
+            return .authorized(subject)
+
         @unknown default:
             assertionFailure("unknown case: \(self)")
             return .unauthorized(.notDetermined(subject))
         }
     }
 }
+#endif
